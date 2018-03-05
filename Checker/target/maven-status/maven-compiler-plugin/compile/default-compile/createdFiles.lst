@@ -1,0 +1,12 @@
+checker\Position.class
+checker\Board.class
+checker\BoardSize.class
+checker\Checker.class
+checker\MoveType.class
+checker\Main.class
+checker\StateProbability.class
+checker\Changes.class
+checker\Checker$1.class
+checker\Player.class
+checker\Checker$Jump.class
+checker\Constants.class
