@@ -14,14 +14,17 @@ public class TicTacToeMoves extends Moves<TicTacToeBoard, TicTacToeChanges, TicT
 		long oldValue = board.id()[0];
 		long newValue = BitUtils.setVal(oldValue, m.index, 
 				board.getCurrentTurn()==Players.Player1?1:2, 3); 
+		Players turn = board.getCurrentTurn()==Players.Player1?Players.Player2:Players.Player1;
+		board.value[0] = newValue;
+		board.setCurrentTurn(turn);
 		return new TicTacToeChanges(board.getCurrentTurn(),
-				board.getCurrentTurn()==Players.Player1?Players.Player2:Players.Player1, 
-						m, oldValue, newValue);
+				turn, m, oldValue, newValue);
 	}
 
 	@Override
 	protected void undo(TicTacToeChanges c) {
 		board.value[0] = c.oldValue;
+		board.setCurrentTurn(c.getCurrentTurn());
 		
 	}
 

@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class SQLFileGenerator {
 	private File dir;
 	private long count;
-	private BufferedWriter br;
+	private BufferedWriter br=null;
 	private int queryCount =0;
 	private int fileIndex = 0;
 	private int saveFrom;
@@ -39,9 +39,13 @@ public class SQLFileGenerator {
 		int saveFrom = 0;
 		
 		for(File f:this.dir.listFiles()) {
-			int i = Integer.parseInt(f.getName().split("\\.")[0]);
-			if(i>saveFrom) {
-				saveFrom = i;
+			try {
+				int i = Integer.parseInt(f.getName().split("\\.")[0]);
+				if(i>saveFrom) {
+					saveFrom = i;
+				}
+			} catch(NumberFormatException e) {
+				
 			}
 		}
 		this.saveFrom = saveFrom==0?0:saveFrom - 1;
@@ -59,7 +63,7 @@ public class SQLFileGenerator {
 		fileIndex++;
 	}
 	
-	private void close() {
+	public void close() {
 		if(fileIndex>saveFrom) {
 			try {
 				br.close();
@@ -72,6 +76,9 @@ public class SQLFileGenerator {
 	}
 	
 	public void saveQuery(String query) {
+		if(br==null) {
+			init();
+		}
 		if(fileIndex>=saveFrom) {
 			try {
 				br.write(query);

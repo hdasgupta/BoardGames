@@ -73,12 +73,12 @@ public abstract class Board<
 	private float[] calculate(Players p) {
 		long[] id = id();
 		String idStr = probability.getSid().toStringId(id);
-		if(probability.exists(id)) {
+		if(isGameOver()) {
+			return probability.get(id, getWinner());
+		} else if(probability.exists(id)) {
 			return probability.get(id);
 		}
-		else if(isGameOver()) {
-			return probability.get(id, getWinner());
-		} else {
+		else  {
 			List<Mv> possibleMoves = getAllPossibleMoves(p);
 			if(possibleMoves.isEmpty()) {
 				return probability.get(id, getWinner());

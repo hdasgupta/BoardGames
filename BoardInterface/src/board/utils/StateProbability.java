@@ -1,11 +1,12 @@
 package board.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import board.model.Board;
 
-public abstract class StateProbability<I extends StateIdentifications> {
+public class StateProbability<I extends StateIdentifications> {
 	
 	protected I sid; 
 	protected SQLFileGenerator sql;
@@ -25,16 +26,20 @@ public abstract class StateProbability<I extends StateIdentifications> {
 	
 	public boolean exists(long... id) {
 		if(sid.exists(id)) {
-			return true;
+			float[] f =CACHE.get(sid.get(id)-1);
+			if(f[0]>=0 && f[1]>=0) {
+				return true;
+			} else {
+				return false;
+			}
 		} else {
-			float[] f = {0.0f, 0.0f};
-			CACHE.add(sid.get(id), f);
 			return false;
 		}
 	}
 	
 	public float[] get(long... id) {
-		return CACHE.get(sid.get(id));
+		int index = sid.get(id);
+		return CACHE.get(index);
 	}
 	
 	public float[] get(long[] id, float... probabilities) {
@@ -42,6 +47,7 @@ public abstract class StateProbability<I extends StateIdentifications> {
 		String valueStr = "', "+probabilities[0]+", "+probabilities[1]+");";
 		for(long[] similar:sid.generateSimilar(id)) {
 			float[] probs =  get(similar);
+			
 			probs[0] = probabilities[0];
 			probs[1] = probabilities[1];
 			
@@ -61,6 +67,8 @@ public abstract class StateProbability<I extends StateIdentifications> {
 
 	public void setSid(I sid) {
 		this.sid = sid;
+		final float[] f = {-1.0f, -1.0f};
+		sid.setAfterChache((long[] id)->CACHE.add(sid.get(id), Arrays.copyOf(f, f.length)));
 	}
 
 

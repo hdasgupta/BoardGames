@@ -40,6 +40,7 @@ public class TicTacToeStateId extends StateIdentifications {
 	public List<long[]> generateSimilar(long[] id) {
 		LinkedList<long[]> similar = new LinkedList<>();
         Long current = id[0];
+        similar.add(id);
         for(int flipLoop=0;flipLoop<2;flipLoop++) {
             for(int rotateLoop=0;rotateLoop<4;rotateLoop++) {
                 if(!exists(similar, current) && current!=id[0]) {
@@ -64,7 +65,7 @@ public class TicTacToeStateId extends StateIdentifications {
                     newRow = row;
                     newColumn = (2-column);
                 }
-                int newValue = get(row, column);
+                int newValue = get(value, row, column);
                 val = BitUtils.setVal(value, positionToIndex(newRow, newColumn), newValue, 3);
             }
         }
