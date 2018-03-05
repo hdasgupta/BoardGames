@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import javax.jms.JMSException;
-
 import board.model.Board;
 import board.model.Changes;
 import board.utils.BitUtils;
