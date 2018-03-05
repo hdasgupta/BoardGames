@@ -14,7 +14,7 @@ public abstract class StateIdentifications {
 	
 	private Function<long[], List<long[]>> func;
 	protected Board board;
-	private final Comparator<long[]> COMPARATOR = new Comparator<long[]>() {
+	protected final Comparator<long[]> COMPARATOR = new Comparator<long[]>() {
 		
 		@Override
 		public int compare(long[] o1, long[] o2) {
