@@ -1,28 +1,28 @@
 package box.model;
 import static box.utils.Constants.*;
 
-import box.utils.Player;
+import board.utils.Players;
 
 public class Box {
 
 	public final int row, column;
-	private Player owner = Player.None;
+	private Players owner = null;
 	
 	private Box(int row, int column) {
 		this.row = row;
 		this.column = column;
 	}
 	
-	public Player getOwner() {
+	public Players getOwner() {
 		return owner;
 	}
 	
-	public void setOwner(Player p) {
+	public void setOwner(Players p) {
 		owner = p;
 	}
 	
 	public void reset() {
-		owner = Player.None;
+		owner = null;
 	}
 	
 	@Override

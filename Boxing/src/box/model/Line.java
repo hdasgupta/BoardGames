@@ -3,10 +3,10 @@ import static box.utils.Constants.LINE;
 import static box.utils.Constants.LINE_LIST;
 import static box.utils.Constants.NO_LINE;
 
-
+import board.model.Move;
 import box.utils.LineType;
 
-public class Line {
+public class Line implements Move {
 	
 	public final int row, column;
 	public final LineType type;

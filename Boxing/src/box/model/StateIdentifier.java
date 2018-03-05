@@ -3,31 +3,33 @@ package box.model;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import board.utils.BitUtils;
+import board.utils.StateIdentifications;
 import box.utils.Constants;
 import box.utils.LineType;
-import box.utils.Player;
 import box.utils.TransformType;
 
-public class StateIdentifier implements Comparable<StateIdentifier> {
-	private final long[] value;
+public class StateIdentifier extends StateIdentifications {
+	/*private final long[] value;*/
 	private static final int HORIZONTAL_LINES = 0, 
 			VERTICAL_LINES = 1, BOXES = 2;
-	private static final CompareValue COMPARE_VALUE = new CompareValue();
+	/*private static final CompareValue COMPARE_VALUE = new CompareValue();
 	private static final long MASKS[] = new long[63];
 	public final LinkedList<StateIdentifier> similars;
 	private static LinkedList<StateIdentifier> CACHE = new LinkedList<StateIdentifier>();
+	*/
 	
-	
-	static {
+	/*static {
 		for(int index = 55; index>=0;index--) {
 			MASKS[55-index] = (long)1<<index;
 		}
-	}
+	}*/
 	
-	private StateIdentifier(long... value) {
+	/*private StateIdentifier(long... value) {
 		this(true, value);
 		generateSimilarIds();
 	}
@@ -36,7 +38,7 @@ public class StateIdentifier implements Comparable<StateIdentifier> {
 		this.value = value;
 		this.similars = new LinkedList<StateIdentifier>();
 		
-	}
+	}*/
 	
 	private long[] change(final long val[], TransformType type) {
 		int dim = Constants.DIMENSION;
@@ -84,17 +86,23 @@ public class StateIdentifier implements Comparable<StateIdentifier> {
 					newIndex =(dim-1)*(2*dim+row+1)-column-1;
 				}
 			}
-			long oldVal = value[otype] & MASKS[index];
-			if(oldVal>0) {
+			boolean oldVal = BitUtils.getVal(val[otype], index);
+			if(oldVal) {
 				int newType = newIndex/Constants.LINE_COUNT;
 				int oIndex = newIndex % Constants.LINE_COUNT;
-				newVal[newType] |= MASKS[oIndex];
+				newVal[newType] = BitUtils.setVal(newVal[newType], oIndex);
 			}
 		}
 		}
 		return newVal;
+	}/*
+	private static String fillWithZerros(long val, int size) {
+		String value = Long.toBinaryString(val);
+		int count = 56  - value.length();
+		char c[] = new char[count];
+		Arrays.fill(c,  Constants.NO_LINE.charAt(0));
+		return (String.valueOf(c)+value).substring(0, size);
 	}
-	
 	private static String fillWithZerros(long val, int size) {
 		String value = Long.toBinaryString(val);
 		int count = 56  - value.length();
@@ -233,5 +241,35 @@ public class StateIdentifier implements Comparable<StateIdentifier> {
 		int index = Collections.binarySearch(CACHE, TEMP);
 		
 		return index >= 0;
+	}*/
+
+	@Override
+	public String toStringId(long[] value) {
+		String id= BitUtils.toString(value[HORIZONTAL_LINES], Constants.LINE_COUNT)
+				+ BitUtils.toString(value[VERTICAL_LINES],  Constants.LINE_COUNT)
+				+ BitUtils.toString(value[BOXES],  Constants.BOX_COUNT);
+		return id;
+	}
+
+	@Override
+	public List<long[]> generateSimilar(long[] value) {
+		final long[] mainId = value;
+		long[] id = mainId;
+		
+		TreeSet<long[]> list = new TreeSet<long[]>(COMPARATOR);		
+		
+		
+		list.add(mainId);
+		list.add(change(id, TransformType.FlipHorazontal));
+		list.add(change(id, TransformType.FlipVertical));
+		for(int i=0;i<3;i++) {
+			list.add(id = change(id, TransformType.Rotate90d));
+			list.add(change(id, TransformType.FlipHorazontal));
+			list.add(change(id, TransformType.FlipVertical));
+		}
+		//tree.remove(mainId);
+		
+		
+		return new LinkedList<long[]>(list);
 	}
 }
