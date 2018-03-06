@@ -26,7 +26,8 @@ public class StateProbability<I extends StateIdentifications> {
 	
 	public boolean exists(long... id) {
 		if(sid.exists(id)) {
-			float[] f =CACHE.get(sid.get(id)-1);
+			int index = sid.get(id);
+			float[] f =CACHE.get(index==0?0:index-1);
 			if(f[0]>=0 && f[1]>=0) {
 				return true;
 			} else {
@@ -47,7 +48,7 @@ public class StateProbability<I extends StateIdentifications> {
 		String valueStr = "', "+probabilities[0]+", "+probabilities[1]+");";
 		for(long[] similar:sid.generateSimilar(id)) {
 			float[] probs =  get(similar);
-			if(probs[0]>=0&&probs[1]>0) {
+			if(probs[0]>=0&&probs[1]>=0) {
 				probs[0] = probabilities[0];
 				probs[1] = probabilities[1];
 				
