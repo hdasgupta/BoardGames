@@ -17,7 +17,7 @@ public class Main {
 		Configuration configuration = 
 				new Configuration(CheckerBoard.class, StateId.class, CheckerMoves.class);
 		
-		configuration.getBean(CheckerBoard.class).simulate();
+		configuration.getBean(CheckerBoard.class).simulate(); 
 		
 		configuration.getBean(SQLFileGenerator.class).close();
 	}
