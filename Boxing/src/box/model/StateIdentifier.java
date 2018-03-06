@@ -9,7 +9,7 @@ import java.util.TreeSet;
 
 import board.utils.BitUtils;
 import board.utils.StateIdentifications;
-import box.utils.Constants;
+import box.threads.BoxBoard;
 import box.utils.LineType;
 import box.utils.TransformType;
 
@@ -41,13 +41,14 @@ public class StateIdentifier extends StateIdentifications {
 	}*/
 	
 	private long[] change(final long val[], TransformType type) {
-		int dim = Constants.DIMENSION;
+		BoxBoard b = (BoxBoard) board;
+		int dim = b.getSize();
 		int row, column, newIndex;
 		final long newVal[] = {0, 0, 0};
 		for(int otype = 0; otype < 3;otype++) {
 		for(int index = 0; index < (otype==BOXES?
-				Constants.BOX_COUNT:Constants.LINE_COUNT);index++) {
-			int oldIndex = otype*Constants.LINE_COUNT+index;
+				b.getTOTAL_BOX():b.getNUMBER_OF_HORIZNTAL_LINES());index++) {
+			int oldIndex = otype*b.getNUMBER_OF_HORIZNTAL_LINES()+index;
 			if(otype==HORIZONTAL_LINES) {
 				
 				row = oldIndex/(dim-1);
@@ -61,7 +62,7 @@ public class StateIdentifier extends StateIdentifications {
 					newIndex =(dim-1)*(row+1)-column-1;
 				}
 			} else if(otype==VERTICAL_LINES) {
-				int vIndex = oldIndex-Constants.LINE_COUNT;
+				int vIndex = oldIndex-b.getNUMBER_OF_HORIZNTAL_LINES();
 				row = vIndex/dim;
 				column = vIndex%dim;
 				
@@ -74,7 +75,7 @@ public class StateIdentifier extends StateIdentifications {
 				}
 				
 			} else {
-				int bxIndex = oldIndex-2*Constants.LINE_COUNT;
+				int bxIndex = oldIndex-2*b.getNUMBER_OF_HORIZNTAL_LINES();
 				row = bxIndex/(dim-1);
 				column = bxIndex%(dim-1);
 				
@@ -88,8 +89,8 @@ public class StateIdentifier extends StateIdentifications {
 			}
 			boolean oldVal = BitUtils.getVal(val[otype], index);
 			if(oldVal) {
-				int newType = newIndex/Constants.LINE_COUNT;
-				int oIndex = newIndex % Constants.LINE_COUNT;
+				int newType = newIndex/b.getNUMBER_OF_HORIZNTAL_LINES();
+				int oIndex = newIndex % b.getNUMBER_OF_HORIZNTAL_LINES();
 				newVal[newType] = BitUtils.setVal(newVal[newType], oIndex);
 			}
 		}
@@ -245,9 +246,10 @@ public class StateIdentifier extends StateIdentifications {
 
 	@Override
 	public String toStringId(long[] value) {
-		String id= BitUtils.toString(value[HORIZONTAL_LINES], Constants.LINE_COUNT)
-				+ BitUtils.toString(value[VERTICAL_LINES],  Constants.LINE_COUNT)
-				+ BitUtils.toString(value[BOXES],  Constants.BOX_COUNT);
+		BoxBoard b = (BoxBoard) board;
+		String id= BitUtils.toString(value[HORIZONTAL_LINES], b.getNUMBER_OF_HORIZNTAL_LINES())
+				+ BitUtils.toString(value[VERTICAL_LINES],  b.getNUMBER_OF_VERTICAL_LINES())
+				+ BitUtils.toString(value[BOXES],  b.getTOTAL_BOX());
 		return id;
 	}
 

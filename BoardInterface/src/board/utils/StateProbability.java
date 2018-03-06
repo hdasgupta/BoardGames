@@ -26,7 +26,8 @@ public class StateProbability<I extends StateIdentifications> {
 	
 	public boolean exists(long... id) {
 		if(sid.exists(id)) {
-			float[] f =CACHE.get(sid.get(id)-1);
+			int index = sid.get(id);
+			float[] f =CACHE.get(index==0?0:index-1);
 			if(f[0]>=0 && f[1]>=0) {
 				return true;
 			} else {
