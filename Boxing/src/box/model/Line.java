@@ -1,14 +1,15 @@
 package box.model;
-import static box.utils.Constants.LINE;
-import static box.utils.Constants.LINE_LIST;
-import static box.utils.Constants.NO_LINE;
+
+import java.util.LinkedList;
 
 import board.model.Move;
 import box.utils.LineType;
 
 public class Line implements Move {
 	
-	public final int row, column;
+	private static final LinkedList<Line> CACHE = new LinkedList<Line>();
+	
+		public final int row, column;
 	public final LineType type;
 	private boolean hasLine = false;
 	
@@ -19,7 +20,7 @@ public class Line implements Move {
 	}
 	
 	public String toString() {
-		return hasLine?LINE:NO_LINE;
+		return hasLine?"0":"1";
 	}
 	
 	public boolean hasLine() {
@@ -34,7 +35,7 @@ public class Line implements Move {
 		hasLine=false;
 	}
 	public static Line getLine(LineType type, int row, int column) {
-		for(Line l:LINE_LIST) {
+		for(Line l:CACHE) {
 			if(l.type==type
 					&&l.row==row
 					&&l.column==column) {
@@ -42,7 +43,7 @@ public class Line implements Move {
 			}
 		}
 		Line l = new Line(type, row, column);
-		LINE_LIST.add(l);
+		CACHE.add(l);
 		return l;
 	}
 }
