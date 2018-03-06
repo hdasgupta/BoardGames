@@ -88,7 +88,6 @@ public class SQLFileGenerator {
 				e.printStackTrace();
 			}
 		}
-		queryCount++;
 		if(queryCount>=count-1) {
 			queryCount=0;
 			close();			

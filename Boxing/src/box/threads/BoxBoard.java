@@ -17,10 +17,12 @@ import box.model.BoxChanges;
 import box.model.BoxMoves;
 import box.model.Line;
 import box.model.StateIdentifier;
+import box.utils.Constants;
 import box.utils.LineType;
 
 public class BoxBoard extends Board<StateIdentifier, BoxMoves, BoxChanges, Line> {
 
+	private int dots_per_row_column;
 	private int TOTAL_DOTS;
 	
 	private int NUMBER_OF_ROWS;
@@ -68,21 +70,8 @@ public class BoxBoard extends Board<StateIdentifier, BoxMoves, BoxChanges, Line>
 				return new Box[] { Box.getBox(l.row, l.column - 1) };
 			}
 		}
-		
-	}
-	
-	public int getNUMBER_OF_HORIZNTAL_LINES() {
-		return NUMBER_OF_HORIZNTAL_LINES;
 	}
 
-	public int getNUMBER_OF_VERTICAL_LINES() {
-		return NUMBER_OF_VERTICAL_LINES;
-	}
-	
-	public int getTOTAL_BOX() {
-		return TOTAL_BOX;
-	}
-	
 	public Line[] adjucentLines(Box b) {
 		Line[] ls = new Line[] { Line.getLine(LineType.Horizontal, b.row, b.column),
 				Line.getLine(LineType.Horizontal, b.row + 1, b.column),
@@ -130,7 +119,7 @@ public class BoxBoard extends Board<StateIdentifier, BoxMoves, BoxChanges, Line>
 				if(index<NUMBER_OF_HORIZNTAL_LINES) {
 					val[0] = BitUtils.setVal(val[0], index);
 				} else {
-					val[1] = BitUtils.setVal(val[1], index-NUMBER_OF_HORIZNTAL_LINES);
+					val[1] = BitUtils.setVal(val[1], index);
 				}
 			}
 			index++;
@@ -148,9 +137,9 @@ public class BoxBoard extends Board<StateIdentifier, BoxMoves, BoxChanges, Line>
 
 	@Override
 	public void init() {
-		TOTAL_DOTS = size;
-		NUMBER_OF_ROWS = size;
-		NUMBER_OF_COLUMNS = size;
+		TOTAL_DOTS = dots_per_row_column;
+		NUMBER_OF_ROWS = dots_per_row_column;
+		NUMBER_OF_COLUMNS = dots_per_row_column;
 		NUMBER_OF_VERTICAL_LINE_ROWS=NUMBER_OF_ROWS-1;
 		NUMBER_OF_HORIZONTAL_LINES_PER_ROW = NUMBER_OF_ROWS - 1;
 		NUMBER_OF_VERTICAL_LINES_PER_COLUMN = NUMBER_OF_COLUMNS - 1;

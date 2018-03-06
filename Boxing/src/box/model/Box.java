@@ -1,12 +1,10 @@
 package box.model;
-
-import java.util.LinkedList;
+import static box.utils.Constants.*;
 
 import board.utils.Players;
 
 public class Box {
 
-	private static final LinkedList<Box> CACHE = new LinkedList<Box>();
 	public final int row, column;
 	private Players owner = null;
 	
@@ -33,13 +31,13 @@ public class Box {
 	}
 	
 	public static Box getBox(int row, int column) {
-		for(Box b:CACHE) {
+		for(Box b:BOX_LIST) {
 			if(b.row==row&&b.column==column) {
 				return b;
 			}
 		}
 		Box b = new Box(row, column);
-		CACHE.add(b);
+		BOX_LIST.add(b);
 		return b;
 	}
 

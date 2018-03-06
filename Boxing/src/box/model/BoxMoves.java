@@ -15,9 +15,7 @@ public class BoxMoves extends Moves<BoxBoard, BoxChanges, Line, StateIdentifier>
 		for(Box box:b) {
 			box.setOwner(board.getCurrentTurn());
 		}
-		BoxChanges c = new  BoxChanges(board.getCurrentTurn(), l, b);
-		board.setCurrentTurn(c.getNextTurn());
-		return c;
+		return new  BoxChanges(board.getCurrentTurn(), l, b);
 	}
 
 	@Override
