@@ -48,7 +48,7 @@ public class StateProbability<I extends StateIdentifications> {
 		String valueStr = "', "+probabilities[0]+", "+probabilities[1]+");";
 		for(long[] similar:sid.generateSimilar(id)) {
 			float[] probs =  get(similar);
-			if(probs[0]>=0&&probs[1]>=0) {
+			if(probs[0]<0&&probs[1]<0) {
 				probs[0] = probabilities[0];
 				probs[1] = probabilities[1];
 				
